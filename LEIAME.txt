@@ -1,0 +1,14 @@
+NOMES ORIGINAIS - instalação
+
+1. Gere os dados (uma vez, e de novo a cada patch grande):
+     cd AzerothOriginal\tools
+     python gerar_dados.py
+   Se o download falhar, baixe os 6 CSVs à mão no wago.tools (veja o topo do
+   gerar_dados.py) e rode: python gerar_dados.py --pasta <pasta_dos_csv>
+
+2. Copie a pasta AzerothOriginal para:
+     World of Warcraft\_forever_\Interface\AddOns\
+
+3. No jogo: /nomes  (status)   /nomes off | on   /nomes teste <texto>
+
+Falsos positivos ou nomes faltando: edite Config.lua (ns.ignorar / ns.extra).

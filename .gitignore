@@ -1,0 +1,7 @@
+__pycache__/
+*.pyc
+tools/csv/
+*.zip
+.DS_Store
+Thumbs.db
+Claude outputs/
