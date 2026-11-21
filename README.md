@@ -70,13 +70,15 @@ Precisa só de Python 3 (biblioteca padrão). Se o download falhar, baixe os CSV
 
 Achou um nome trocado errado, um nome faltando ou uma janela que não é traduzida? Veja o [CONTRIBUTING.md](CONTRIBUTING.md).
 
-## Apoie o projeto ☕
+## Apoie o projeto
 
-Se o Azeroth Original deixou suas jornadas por Azeroth mais com cara de 2005, considere pagar um café para ajudar a manter o addon atualizado a cada patch:
+O Azeroth Original é feito pelo **Party de Dois**, um casal que joga e faz lives. Se o addon deixou suas jornadas mais com cara de 2005 e você quiser ajudar a mantê-lo atualizado a cada patch:
 
-- ☕ **[Pague um café](LINK_DE_DOACAO)**
+- 💙 **Doação via PayPal:** [paypal.me/partydedois](https://paypal.me/partydedois)
+- 🎮 **Twitch:** [twitch.tv/partydedois](https://www.twitch.tv/partydedois)
+- 📱 **TikTok:** [tiktok.com/@partydedois](https://www.tiktok.com/@partydedois)
 
-Também dá para apoiar pelo botão **Donate** na página do CurseForge. E reportar bugs ou nomes errados nas *issues* ajuda tanto quanto!
+Reportar bugs ou nomes errados nas *issues* ajuda tanto quanto!
 
 ## Licença
 

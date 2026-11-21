@@ -2,7 +2,9 @@
 ## Title: Azeroth Original
 ## Notes: Jogue em português (pt-BR) com os nomes originais em inglês (lugares e, opcionalmente, NPCs) nas missões, diálogos, mapas e no Questie.
 ## Notes-ptBR: Jogue em português (pt-BR) com os nomes originais em inglês (lugares e, opcionalmente, NPCs) nas missões, diálogos, mapas e no Questie.
-## Author: Diego
+## Author: Under
+## X-Website: https://www.twitch.tv/partydedois
+## X-Donate: https://paypal.me/partydedois
 ## Version: @project-version@
 ## SavedVariables: AzerothOriginalDB
 

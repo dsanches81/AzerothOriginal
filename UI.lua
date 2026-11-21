@@ -1,7 +1,7 @@
 -- Janela de opções do Azeroth Original (/azo) e entrada no menu Opções > AddOns.
 local ADDON, ns = ...
 
-local LARGURA, ALTURA = 440, 570
+local LARGURA, ALTURA = 460, 610
 local janela
 
 local function criarFrame()
@@ -123,12 +123,16 @@ local function construir()
     linha(cabS, 4, 20)
     f.status = texto(f, "GameFontHighlightSmall")
     f.status:SetWidth(LARGURA - 44)
-    linha(f.status, 6, 60)
+    linha(f.status, 6, 74)
     f.erros = texto(f, "GameFontRedSmall")
     f.erros:SetWidth(LARGURA - 44)
     f.erros:SetPoint("TOPLEFT", f.status, "BOTTOMLEFT", 0, -4)
 
     -- Rodapé
+    local credito = texto(f, "GameFontDisableSmall",
+        "Feito por |cffb48cffParty de Dois|r  ·  Twitch e TikTok: |cffffffffpartydedois|r")
+    credito:SetPoint("BOTTOMLEFT", 18, 70)
+
     local aviso = texto(f, "GameFontDisableSmall",
         "Ao desligar algo, o que já foi trocado na tela volta ao português depois de Recarregar.")
     aviso:SetWidth(LARGURA - 40)
@@ -163,7 +167,9 @@ local function construir()
             "Addon: " .. (st.ligado and "|cff33ff33ligado|r" or "|cffff3333desligado|r") ..
             "\nNomes de lugares: " .. st.lugares ..
             "\nNomes de NPCs: " .. (db.npcs and st.npcs or "|cff999999desligado|r") ..
-            "\nQuestie: " .. q)
+            "\nQuestie: " .. q ..
+            "\nModo abrangente: " .. (st.global and ("|cff33ff33ativo|r (" .. st.globalTrocas .. " textos trocados)") or "|cffff3333inativo|r") ..
+            "   |cff999999v" .. (ns.VERSAO or "?") .. "|r")
         if #st.erros > 0 then
             self.erros:SetText("Erros:\n" .. table.concat(st.erros, "\n"))
         else
