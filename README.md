@@ -20,6 +20,7 @@ Feito para quem joga desde antes da tradução e se acostumou com *Stormwind*, *
 - Tooltips: pinos do mapa, pontos de voo, pedra de regresso etc.
 - Rastreador do **Questie**: cabeçalhos de zona e objetivos
 - **Nomes de NPCs** (opcional, `/azo npcs on`): "Magistrado Salomão" → "Magistrate Solomon", também nas tooltips, objetivos e no chat
+- **Nomes de itens** (opcional, `/azo itens on`): "Escamas Cristalizadas" → "Crystalized Scales". Útil para pesquisar em sites internacionais como o Wowhead
 
 Não altera o chat de jogadores, por escolha.
 
@@ -36,7 +37,7 @@ Não altera o chat de jogadores, por escolha.
 2. Copie a pasta `AzerothOriginal` para `World of Warcraft\_forever_\Interface\AddOns\` (a pasta precisa se chamar exatamente `AzerothOriginal`).
 3. Entre no jogo e digite `/azo` para abrir as opções.
 
-Tudo já vem pronto: os mais de 7.800 nomes de lugares e 8.200 de NPCs estão incluídos no addon. Não é preciso instalar nem rodar mais nada.
+Tudo já vem pronto: os mais de 7.800 nomes de lugares, 8.200 de NPCs e 16.000 de itens estão incluídos no addon. Não é preciso instalar nem rodar mais nada.
 
 ### Opções
 
@@ -51,6 +52,7 @@ Digite `/azo` para abrir a janela de opções (também em **Opções → AddOns 
 | `/nomes on` / `/nomes off` | Liga / desliga |
 | `/nomes teste <texto>` | Mostra como um texto ficaria |
 | `/azo npcs on` / `/azo npcs off` | Liga / desliga a troca dos **nomes de NPCs** (desligada por padrão) |
+| `/azo itens on` / `/azo itens off` | Liga / desliga a troca dos **nomes de itens** (desligada por padrão) |
 | `/azo mapa` | Com o mapa aberto, lista os textos do mapa (para diagnóstico) |
 | `/azo add` | Com o mouse sobre um texto que não foi trocado, passa a revisar aquele quadro (útil para outros addons) |
 | `/azo quadros` | Lista os quadros adicionados com `/azo add` |

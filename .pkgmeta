@@ -1,6 +1,11 @@
 package-as: AzerothOriginal
 
+manual-changelog:
+  filename: CHANGELOG.md
+  markup-type: markdown
+
 ignore:
   - tools
   - "Claude outputs"
   - CONTRIBUTING.md
+  - SECURITY.md

@@ -8,7 +8,7 @@ local ADDON, ns = ...
 local byte, sub, find = string.byte, string.sub, string.find
 local index = {}
 local indexCaixaAlta = {}   -- "VILA D'OURO" -> "GOLDSHIRE" (rótulos do mapa em maiúsculas)
-local total, totalLugares, totalNpcs = 0, 0, 0
+local total, totalLugares, totalNpcs, totalItens = 0, 0, 0, 0
 
 local function isLetter(b)
     -- letras ASCII ou qualquer byte de caractere UTF-8 (acentos)
@@ -91,18 +91,25 @@ local function buildIndex()
     for pt, en in pairs(ns.extra or {}) do merged[pt] = en end
     for pt, en in pairs(merged) do add(pt, en) end
     totalLugares = total
-    -- NPCs (opcional, /azo npcs). Lugares têm prioridade se o nome coincidir.
-    local npcs = {}
-    if AzerothOriginalDB and AzerothOriginalDB.npcs then
-        for pt, en in pairs(ns.npcs or {}) do
-            if not merged[pt] then npcs[pt] = en; add(pt, en, true) end
+    -- NPCs e itens (opcionais). Prioridade: lugares > NPCs > itens, quando o
+    -- mesmo nome em português aparece em mais de uma lista.
+    local extras = {}     -- pt -> en de NPCs e itens ligados
+    local function incluir(ligado, dados, iguais)
+        local antes = total
+        if ligado then
+            for pt, en in pairs(dados or {}) do
+                if not merged[pt] and not extras[pt] then extras[pt] = en; add(pt, en, true) end
+            end
+            for _, nome in ipairs(iguais or {}) do addIdentidade(nome, merged) end
         end
-        for _, nome in ipairs(ns.npcsIguais or {}) do addIdentidade(nome, merged) end
+        return total - antes
     end
-    totalNpcs = total - totalLugares
+    local db = AzerothOriginalDB or {}
+    totalNpcs = incluir(db.npcs, ns.npcs, ns.npcsIguais)
+    totalItens = incluir(db.itens, ns.itens, ns.itensIguais)
     local vistos = {}
-    for _, en in pairs(npcs) do
-        if not vistos[en] and not npcs[en] then vistos[en] = true; addIdentidade(en, merged) end
+    for _, en in pairs(extras) do
+        if not vistos[en] and not extras[en] then vistos[en] = true; addIdentidade(en, merged) end
     end
     for _, en in pairs(merged) do
         if not vistos[en] then
@@ -660,6 +667,7 @@ ev:SetScript("OnEvent", function(_, event, arg1)
             AzerothOriginalDB = AzerothOriginalDB or { enabled = true }
             AzerothOriginalDB.areas = AzerothOriginalDB.areas or {}
             if AzerothOriginalDB.npcs == nil then AzerothOriginalDB.npcs = false end
+            if AzerothOriginalDB.itens == nil then AzerothOriginalDB.itens = false end
             buildIndex()
         elseif arg1 == "Blizzard_TalkingHeadUI" then
             hookTalkingHead()
@@ -701,6 +709,7 @@ ns.Status = function()
         ligado = enabled() and true or false,
         lugares = totalLugares,
         npcs = AzerothOriginalDB.npcs and totalNpcs or 0,
+        itens = AzerothOriginalDB.itens and totalItens or 0,
         questieCarregado = questieCarregado() and true or false,
         questieOk = questieOk,
         linhasQuestie = linhasQuestie,
@@ -807,6 +816,15 @@ SlashCmdList.AZEROTHORIGINAL = function(msg)
                 nivel = nivel + 1
             end
         end
+    elseif cmd == "itens" then
+        local arg = rest:lower()
+        if arg == "on" then AzerothOriginalDB.itens = true
+        elseif arg == "off" then AzerothOriginalDB.itens = false
+        else AzerothOriginalDB.itens = not AzerothOriginalDB.itens end
+        buildIndex()
+        print(tag .. "nomes de itens " .. (AzerothOriginalDB.itens and ("ligados (" .. totalItens .. " nomes)") or "desligados")
+              .. ". Reabra as janelas ou use /reload para ver em tudo.")
+        agendar()
     elseif cmd == "add" then
         local f = quadroSobMouse()
         if not f then
@@ -827,6 +845,6 @@ SlashCmdList.AZEROTHORIGINAL = function(msg)
             print("  Questie: " .. (questieOk and ("integrado (" .. linhasQuestie .. " linhas)")
                   or ("carregado, mas linhas do rastreador não encontradas (linePool1 = " .. tostring(_G.linePool1 ~= nil) .. ")")))
         end
-        print("  /azo (janela) | status | diag | on | off | npcs on|off | teste <texto> | onde | add | quadros")
+        print("  /azo (janela) | status | diag | mapa | on | off | npcs on|off | itens on|off | teste <texto> | onde | add | quadros")
     end
 end

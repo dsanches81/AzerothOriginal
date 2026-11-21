@@ -1,7 +1,7 @@
 -- Janela de opções do Azeroth Original (/azo) e entrada no menu Opções > AddOns.
 local ADDON, ns = ...
 
-local LARGURA, ALTURA = 460, 610
+local LARGURA, ALTURA = 460, 650
 local janela
 
 local function criarFrame()
@@ -84,7 +84,12 @@ local function construir()
     f.cbNpcs = caixa(f, "Trocar também os nomes de NPCs",
         "\"Magistrado Salomão\" vira \"Magistrate Solomon\". Vale para missões, objetivos, tooltips e chat.",
         function(v) db.npcs = v; ns.Reaplicar(); f:Atualizar() end)
-    linha(f.cbNpcs, 0, 36)
+    linha(f.cbNpcs)
+
+    f.cbItens = caixa(f, "Trocar também os nomes de itens",
+        "\"Escamas Cristalizadas\" vira \"Crystalized Scales\". Útil para pesquisar em sites internacionais. Vale para tooltips, bolsas, objetivos e recompensas.",
+        function(v) db.itens = v; ns.Reaplicar(); f:Atualizar() end)
+    linha(f.cbItens, 0, 36)
 
     -- Áreas
     local cab = texto(f, "GameFontNormal", "Onde trocar os nomes")
@@ -123,7 +128,7 @@ local function construir()
     linha(cabS, 4, 20)
     f.status = texto(f, "GameFontHighlightSmall")
     f.status:SetWidth(LARGURA - 44)
-    linha(f.status, 6, 74)
+    linha(f.status, 6, 88)
     f.erros = texto(f, "GameFontRedSmall")
     f.erros:SetWidth(LARGURA - 44)
     f.erros:SetPoint("TOPLEFT", f.status, "BOTTOMLEFT", 0, -4)
@@ -153,6 +158,7 @@ local function construir()
     function f:Atualizar()
         self.cbLigado:SetChecked(db.enabled)
         self.cbNpcs:SetChecked(db.npcs)
+        self.cbItens:SetChecked(db.itens)
         for _, cb in ipairs(self.cbAreas) do
             cb:SetChecked(db.areas[cb.chave] ~= false)
             cb:SetEnabled(db.enabled and true or false)
@@ -167,6 +173,7 @@ local function construir()
             "Addon: " .. (st.ligado and "|cff33ff33ligado|r" or "|cffff3333desligado|r") ..
             "\nNomes de lugares: " .. st.lugares ..
             "\nNomes de NPCs: " .. (db.npcs and st.npcs or "|cff999999desligado|r") ..
+            "\nNomes de itens: " .. (db.itens and st.itens or "|cff999999desligado|r") ..
             "\nQuestie: " .. q ..
             "\nModo abrangente: " .. (st.global and ("|cff33ff33ativo|r (" .. st.globalTrocas .. " textos trocados)") or "|cffff3333inativo|r") ..
             "   |cff999999v" .. (ns.VERSAO or "?") .. "|r")
