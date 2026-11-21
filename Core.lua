@@ -251,6 +251,89 @@ local function instalarChat()
 end
 
 ----------------------------------------------------------------------
+-- Mapas: minimapa, aviso de zona, mapa-múndi e tooltips
+----------------------------------------------------------------------
+local function corrigirZona()
+    if not enabled() then return end
+    fixFontString(ZoneTextString)
+    fixFontString(SubZoneTextString)
+    fixFontString(PVPInfoTextString)
+    fixFontString(MinimapZoneText)
+    if MinimapCluster then walk(MinimapCluster, 0) end
+end
+
+local function agendarZona()
+    C_Timer.After(0, corrigirZona)
+    C_Timer.After(0.2, corrigirZona)   -- o aviso de zona às vezes é preenchido um pouco depois
+end
+
+-- O mapa-múndi recria rótulos ao passar o mouse e ao trocar de mapa, então
+-- enquanto ele estiver aberto revisamos os textos algumas vezes por segundo.
+-- O custo é baixo: depois da troca o texto já está em inglês e nada muda.
+local mapaTicker = CreateFrame("Frame")
+mapaTicker:Hide()
+local acumulado = 0
+mapaTicker:SetScript("OnUpdate", function(self, dt)
+    acumulado = acumulado + dt
+    if acumulado < 0.15 then return end
+    acumulado = 0
+    if not enabled() then return end
+    if WorldMapFrame and WorldMapFrame:IsShown() then walk(WorldMapFrame, 0) end
+    if FlightMapFrame and FlightMapFrame:IsShown() then walk(FlightMapFrame, 0) end
+    if TaxiFrame and TaxiFrame:IsShown() then walk(TaxiFrame, 0) end
+end)
+
+local function hookMapa(frame)
+    if not frame or frame.azoHooked then return end
+    frame.azoHooked = true
+    frame:HookScript("OnShow", function() acumulado = 1; mapaTicker:Show() end)
+    frame:HookScript("OnHide", function()
+        if not ((WorldMapFrame and WorldMapFrame:IsShown())
+             or (FlightMapFrame and FlightMapFrame:IsShown())
+             or (TaxiFrame and TaxiFrame:IsShown())) then
+            mapaTicker:Hide()
+        end
+    end)
+    if frame:IsShown() then mapaTicker:Show() end
+end
+
+-- Tooltips: pinos do mapa, pontos de voo, pedra de regresso ("Lar: ...") etc.
+local ajustandoTooltip = false
+local function corrigirTooltip(tt)
+    if ajustandoTooltip or not enabled() or not tt or not tt.GetName then return end
+    if tt.IsForbidden and tt:IsForbidden() then return end
+    local nome = tt:GetName()
+    if not nome then return end
+    local mudou = false
+    for i = 1, tt:NumLines() do
+        for _, lado in ipairs({ "TextLeft", "TextRight" }) do
+            local fs = _G[nome .. lado .. i]
+            if fs then
+                local ok, t = pcall(fs.GetText, fs)
+                if ok and type(t) == "string" then
+                    local nt = Translate(t)
+                    if nt ~= t then fs:SetText(nt); mudou = true end
+                end
+            end
+        end
+    end
+    if mudou then           -- reajusta a largura da tooltip ao texto novo
+        ajustandoTooltip = true
+        tt:Show()
+        ajustandoTooltip = false
+    end
+end
+
+local function hookTooltips()
+    for _, tt in ipairs({ GameTooltip, ItemRefTooltip }) do
+        if tt and not tt.azoHooked then
+            tt.azoHooked = true
+            hooksecurefunc(tt, "Show", corrigirTooltip)
+        end
+    end
+end
+
+----------------------------------------------------------------------
 -- Eventos
 ----------------------------------------------------------------------
 local ev = CreateFrame("Frame")
@@ -260,18 +343,32 @@ for _, e in ipairs({ "QUEST_DETAIL", "QUEST_PROGRESS", "QUEST_COMPLETE", "QUEST_
                      "GOSSIP_SHOW", "TALKINGHEAD_REQUESTED" }) do
     ev:RegisterEvent(e)
 end
+local EVENTOS_ZONA = { ZONE_CHANGED = true, ZONE_CHANGED_INDOORS = true,
+                       ZONE_CHANGED_NEW_AREA = true, PLAYER_ENTERING_WORLD = true }
+for e in pairs(EVENTOS_ZONA) do ev:RegisterEvent(e) end
+
 ev:SetScript("OnEvent", function(_, event, arg1)
-    if event == "ADDON_LOADED" then
+    if EVENTOS_ZONA[event] then
+        agendarZona()
+    elseif event == "ADDON_LOADED" then
         if arg1 == ADDON then
             AzerothOriginalDB = AzerothOriginalDB or { enabled = true }
             buildIndex()
         elseif arg1 == "Blizzard_TalkingHeadUI" then
             hookTalkingHead()
+        elseif arg1 == "Blizzard_WorldMap" then
+            hookMapa(WorldMapFrame)
+        elseif arg1 == "Blizzard_FlightMap" then
+            hookMapa(FlightMapFrame)
         end
     elseif event == "PLAYER_LOGIN" then
         instalarHooks()
         hookTalkingHead()
         instalarChat()
+        hookMapa(WorldMapFrame)
+        hookMapa(FlightMapFrame)
+        hookMapa(TaxiFrame)
+        hookTooltips()
         if total == 0 then
             print("|cff33ff99Azeroth Original|r: nenhum nome carregado. Rode tools/gerar_dados.py para gerar o Data.lua.")
         end

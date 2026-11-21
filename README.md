@@ -16,6 +16,8 @@ Feito para quem joga desde antes da tradução e se acostumou com *Stormwind*, *
 - Diálogos de NPC (gossip): fala inicial e opções
 - Talking Head (o quadro com o rosto do NPC)
 - Falas de NPC no chat: diz, grita, sussurra, emotes de chefe
+- Mapas: minimapa, aviso ao entrar numa zona, mapa-múndi e mapa de voo
+- Tooltips: pinos do mapa, pontos de voo, pedra de regresso etc.
 
 Não altera: áudio dublado, livros e cartas do jogo, rastreador de objetivos e chat de jogadores.
 
