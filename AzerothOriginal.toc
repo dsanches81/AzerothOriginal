@@ -7,6 +7,7 @@
 ## X-Donate: https://paypal.me/partydedois
 ## Version: @project-version@
 ## SavedVariables: AzerothOriginalDB
+## X-Curse-Project-ID: 1820623
 
 Data.lua
 DataQuestie.lua

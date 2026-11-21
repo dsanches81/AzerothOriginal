@@ -27,7 +27,9 @@ Não altera: áudio dublado, livros e cartas do jogo, rastreador de objetivos e 
 
 1. Baixe o repositório (botão **Code → Download ZIP**) ou a release mais recente.
 2. Copie a pasta `AzerothOriginal` para `World of Warcraft\_forever_\Interface\AddOns\` (a pasta precisa se chamar exatamente `AzerothOriginal`).
-3. Entre no jogo e digite `/nomes` para ver quantos nomes foram carregados.
+3. Entre no jogo e digite `/azo` para abrir as opções.
+
+Tudo já vem pronto: os mais de 7.800 nomes de lugares e 8.200 de NPCs estão incluídos no addon. Não é preciso instalar nem rodar mais nada.
 
 ### Opções
 
@@ -53,18 +55,6 @@ Regras extras:
 - Se o original começa com "The" e já existe um artigo antes no português ("as Terras Agrestes"), o "The" é removido ("as Hinterlands").
 - Nomes em português com artigo ("A Vila de Brisabela") também são encontrados sem ele ("na Vila de Brisabela").
 - Palavras comuns que também são nome de subzona (Inferno, Refúgio, Continente…) ficam bloqueadas em `Config.lua`.
-
-## Atualizando os dados (a cada patch grande)
-
-```
-cd tools
-python gerar_dados.py      # lugares, a partir das tabelas do jogo (wago.tools)
-python gerar_questie.py    # zonas do Questie e nomes de NPCs, a partir do Questie/QuestieDB
-```
-
-Os nomes de NPCs e as zonas do rastreador vêm dos projetos [Questie](https://github.com/Questie/Questie) e [QuestieDB](https://github.com/Questie/QuestieDB), que mantêm o Forever em inglês e pt-BR.
-
-Precisa só de Python 3 (biblioteca padrão). Se o download falhar, baixe os CSVs à mão no [wago.tools](https://wago.tools) e use `python gerar_dados.py --pasta <pasta>` (instruções no topo do script).
 
 ## Contribuindo
 
