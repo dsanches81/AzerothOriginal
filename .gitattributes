@@ -1,0 +1,8 @@
+# Todos os arquivos de texto ficam com quebra de linha LF (padrão Linux), no
+# repositório e na sua pasta. O WoW e os editores modernos leem LF sem problema,
+# e isso acaba com os avisos "LF will be replaced by CRLF".
+* text=auto eol=lf
+*.png binary
+*.tga binary
+*.zip binary
+*.ps1 text eol=crlf
