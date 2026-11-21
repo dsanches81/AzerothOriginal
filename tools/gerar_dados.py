@@ -121,6 +121,7 @@ def main():
         EXTRA = "&build=" + args.build
 
     votos = collections.defaultdict(collections.Counter)
+    nomes_iguais = set()   # nomes idênticos nos dois idiomas ("Loch Modan"): protegidos contra trocas parciais
     for t in TABELAS:
         try:
             en = mapear(carregar(t, "enUS", args.pasta))
@@ -133,6 +134,9 @@ def main():
             sys.exit(f"{t}: ptBR e enUS vieram quase idênticos; o idioma não foi aplicado no download.")
         for k, nome_pt in pt.items():
             nome_en = en.get(k)
+            if nome_pt and nome_pt == nome_en and len(nome_pt) >= 4 and " " in nome_pt \
+                    and not any(ch.isdigit() for ch in nome_pt) and not any(x in nome_pt for x in LIXO):
+                nomes_iguais.add(nome_pt)
             if valido(nome_pt, nome_en):
                 votos[nome_pt][nome_en] += 1
 
@@ -152,6 +156,10 @@ def main():
         f.write("local _, ns = ...\nns.data = {\n")
         for k in sorted(final):
             f.write(f"    [{lua_str(k)}] = {lua_str(final[k])},\n")
+        f.write("}\n")
+        f.write("ns.iguais = {\n")
+        for k in sorted(nomes_iguais):
+            f.write(f"    {lua_str(k)},\n")
         f.write("}\n")
 
     print(f"OK: {len(final)} nomes gravados em {os.path.normpath(args.saida)}")

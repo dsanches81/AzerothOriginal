@@ -19,6 +19,7 @@ local ignorar = {
     "Pestilência", "Precipício", "Prefeitura", "Promontório", "Protótipo",
     "Pórtico", "Quadra", "Refinaria", "Refúgio", "Reserva", "Retiro", "Serra",
     "Sucataria", "Subárea", "Testando", "Tocas", "Triunfo",
+    "Loch",   -- subzona "The Loch"; sem isso "Loch Modan" vira "The Loch Modan"
 }
 ns.ignorar = {}
 for _, n in ipairs(ignorar) do ns.ignorar[n] = true end

@@ -1,0 +1,6 @@
+package-as: AzerothOriginal
+
+ignore:
+  - tools
+  - "Claude outputs"
+  - CONTRIBUTING.md
