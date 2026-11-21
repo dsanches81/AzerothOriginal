@@ -1,0 +1,39 @@
+name: Nome errado ou bug
+description: Um nome trocado errado, um nome que faltou ou um erro no addon
+labels: ["bug"]
+body:
+  - type: dropdown
+    id: tipo
+    attributes:
+      label: O que aconteceu?
+      options:
+        - Um nome foi trocado errado
+        - Um nome não foi trocado
+        - Erro (Lua error) ou janela quebrada
+        - Outro
+    validations:
+      required: true
+  - type: textarea
+    id: frase
+    attributes:
+      label: Frase original e como ficou
+      description: Copie a frase em português e como ela apareceu com o addon. Dica, use /azo teste seguido da frase.
+      placeholder: "Antes: ... / Depois: ..."
+    validations:
+      required: true
+  - type: input
+    id: onde
+    attributes:
+      label: Onde apareceu?
+      placeholder: missão, diálogo, mapa, tooltip, Questie, EllesmereUI...
+  - type: textarea
+    id: erro
+    attributes:
+      label: Mensagem de erro (se houver)
+      description: Cole o relatório do BugSack/Bugsy ou o resultado de /azo diag
+      render: text
+  - type: input
+    id: versao
+    attributes:
+      label: Versão do addon
+      description: Aparece no rodapé da janela /azo
