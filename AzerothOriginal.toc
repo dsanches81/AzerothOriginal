@@ -1,6 +1,6 @@
 ## Interface: 16001
 ## Title: Azeroth Original
-## Notes: Jogue em português (pt-BR) com os nomes originais em inglês (lugares e, opcionalmente, NPCs) nas missões, diálogos, mapas e no Questie.
+## Notes: Keep WoW: Forever in Portuguese (ptBR) but show the original English names of places (and optionally NPCs and items) in quests, dialogue, maps and Questie.
 ## Notes-ptBR: Jogue em português (pt-BR) com os nomes originais em inglês (lugares e, opcionalmente, NPCs) nas missões, diálogos, mapas e no Questie.
 ## Author: Under
 ## X-Website: https://www.twitch.tv/partydedois

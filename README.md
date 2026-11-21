@@ -1,5 +1,43 @@
 # Azeroth Original
 
+**English** · [Português](#português)
+
+An addon for **World of Warcraft: Forever** for Brazilian Portuguese (ptBR) players: keep the game in Portuguese, but see the **original English names** of places (and, optionally, NPCs and items) everywhere in the interface.
+
+Made for veterans who played before the Portuguese localization existed and still think of *Stormwind*, *Ironforge* and *Elwynn Forest*, not *Ventobravo*, *Altaforja* and *Floresta de Elwynn*.
+
+> Leve esta carta ao ferreiro em Vila d'Ouro, na Floresta de Elwynn, e depois siga para Ventobravo.
+>
+> **becomes**
+>
+> Leve esta carta ao ferreiro em Goldshire, na Elwynn Forest, e depois siga para Stormwind.
+
+### Where it works
+- Quest text, objectives and rewards, NPC dialogue (gossip) and Talking Heads
+- Maps: world map titles and hover labels, minimap, zone text, flight map
+- Tooltips, NPC speech and system messages in chat ("You discovered Raven Hill")
+- Questie tracker and other addons' text (e.g. EllesmereUI) via the comprehensive mode
+- **Optional:** NPC names ("Magistrado Salomão" → "Magistrate Solomon") and item names ("Escamas Cristalizadas" → "Crystalized Scales"), handy for searching international sites like Wowhead
+
+Player chat is never changed.
+
+### Limitations
+- **Names floating above NPCs' heads** are drawn by the game engine, and no API lets an addon change that text.
+- **Voiced audio** (including voice addons like Spoken) keeps the Portuguese names.
+- **Names painted into the map artwork** are part of the image and cannot be changed.
+
+### Usage
+Type `/azo` to open the options window (also under Options → AddOns). Everything is included: over 7,800 place names, 8,200 NPC names and 16,000 item names. No setup needed.
+
+### Support
+Made by **Party de Dois**: [PayPal](https://paypal.me/partydedois) · [Twitch](https://www.twitch.tv/partydedois) · [TikTok](https://www.tiktok.com/@partydedois)
+
+License: GPLv3. World of Warcraft is a trademark of Blizzard Entertainment; this project is not affiliated with Blizzard.
+
+---
+
+## Português
+
 Addon para **World of Warcraft: Forever** que mantém o jogo em **português (ptBR)**, mas mostra os **nomes de lugares originais em inglês** nos textos de missões e diálogos.
 
 Feito para quem joga desde antes da tradução e se acostumou com *Stormwind*, *Ironforge* e *Elwynn Forest*.
