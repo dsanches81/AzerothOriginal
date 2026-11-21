@@ -21,7 +21,14 @@ Feito para quem joga desde antes da tradução e se acostumou com *Stormwind*, *
 - Rastreador do **Questie**: cabeçalhos de zona e objetivos
 - **Nomes de NPCs** (opcional, `/azo npcs on`): "Magistrado Salomão" → "Magistrate Solomon", também nas tooltips, objetivos e no chat
 
-Não altera: áudio dublado, livros e cartas do jogo, rastreador de objetivos e chat de jogadores.
+Não altera o chat de jogadores, por escolha.
+
+### Limitações (o que nenhum addon consegue mudar)
+
+- **Nomes flutuando sobre a cabeça dos NPCs e jogadores**: são desenhados direto pelo motor do jogo no mundo 3D, não pela interface. A Blizzard não oferece nenhuma API que permita a um addon alterar esse texto (só a fonte). Alternativa: desligue os nomes do jogo e use nameplates de NPCs amigáveis de um addon (ex.: EllesmereUI); essas o Azeroth Original consegue trocar, fora de masmorras e raides.
+- **Áudio dublado** (falas dos NPCs e de addons de voz como o Spoken): o áudio é gravado, então o NPC continua falando o nome em português.
+- **Textos "lacrados" pelo jogo**: em algumas situações o motor entrega certos textos aos addons de forma protegida (secret values); esses são ignorados por segurança.
+- **Nomes pintados na arte do mapa** (ex.: "BOCA DA MATA", "MORRO DA SENTINELA" no mapa de zona): fazem parte da imagem do mapa, que o jogo carrega só no idioma instalado. Nenhum addon consegue trocá-los. Os nomes que são texto (títulos, rótulos ao passar o mouse, legendas e tooltips) são trocados normalmente. `/azo mapa` lista quais nomes do mapa aberto são texto.
 
 ## Instalação
 
@@ -44,6 +51,7 @@ Digite `/azo` para abrir a janela de opções (também em **Opções → AddOns 
 | `/nomes on` / `/nomes off` | Liga / desliga |
 | `/nomes teste <texto>` | Mostra como um texto ficaria |
 | `/azo npcs on` / `/azo npcs off` | Liga / desliga a troca dos **nomes de NPCs** (desligada por padrão) |
+| `/azo mapa` | Com o mapa aberto, lista os textos do mapa (para diagnóstico) |
 | `/azo add` | Com o mouse sobre um texto que não foi trocado, passa a revisar aquele quadro (útil para outros addons) |
 | `/azo quadros` | Lista os quadros adicionados com `/azo add` |
 

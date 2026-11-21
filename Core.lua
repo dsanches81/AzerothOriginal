@@ -7,6 +7,7 @@ local ADDON, ns = ...
 ----------------------------------------------------------------------
 local byte, sub, find = string.byte, string.sub, string.find
 local index = {}
+local indexCaixaAlta = {}   -- "VILA D'OURO" -> "GOLDSHIRE" (rótulos do mapa em maiúsculas)
 local total, totalLugares, totalNpcs = 0, 0, 0
 
 local function isLetter(b)
@@ -18,6 +19,22 @@ local function firstWord(s)
     local j = 1
     while j <= #s and isLetter(byte(s, j)) do j = j + 1 end
     return sub(s, 1, j - 1)
+end
+
+-- Maiúsculas que entendem acentos do português em UTF-8 (á -> Á, ç -> Ç...)
+function ns.Maiusculas(s)
+    s = s:upper()
+    return (s:gsub("\195([\160-\190])", function(c)
+        local b = c:byte()
+        if b == 183 then return "\195" .. c end          -- ÷ não tem maiúscula
+        return "\195" .. string.char(b - 32)
+    end))
+end
+
+-- texto todo em maiúsculas? (tem letra, mas nenhuma minúscula)
+local function emCaixaAlta(text)
+    if find(text, "[a-z]") or find(text, "\195[\160-\190]") then return false end
+    return find(text, "[A-Z]") ~= nil
 end
 
 local function add(pt, en, npc)
@@ -98,6 +115,22 @@ local function buildIndex()
     for _, list in pairs(index) do
         table.sort(list, function(a, b) return a.len > b.len end)
     end
+    -- mesma lista em CAIXA ALTA
+    wipe(indexCaixaAlta)
+    for _, list in pairs(index) do
+        for _, c in ipairs(list) do
+            local pt = ns.Maiusculas(c.pt)
+            local w = firstWord(pt)
+            if w ~= "" then
+                local l2 = indexCaixaAlta[w]
+                if not l2 then l2 = {}; indexCaixaAlta[w] = l2 end
+                l2[#l2 + 1] = { pt = pt, en = ns.Maiusculas(c.en), len = #pt, ident = c.ident, soMeio = c.soMeio }
+            end
+        end
+    end
+    for _, list in pairs(indexCaixaAlta) do
+        table.sort(list, function(a, b) return a.len > b.len end)
+    end
 end
 
 ----------------------------------------------------------------------
@@ -165,6 +198,7 @@ end
 
 local function Translate(text)
     if not legivel(text) or text == "" then return text end
+    local idx = emCaixaAlta(text) and indexCaixaAlta or index
     local n = #text
     local out, o = nil, 0
     local i, copyFrom = 1, 1
@@ -180,7 +214,7 @@ local function Translate(text)
             else
                 local j = i
                 while j <= n and isLetter(byte(text, j)) do j = j + 1 end
-                local cands = index[sub(text, i, j - 1)]
+                local cands = idx[sub(text, i, j - 1)]
                 local hit
                 if cands then
                     for k = 1, #cands do
@@ -196,7 +230,7 @@ local function Translate(text)
                     out[o + 1] = sub(text, copyFrom, i - 1)
                     local en = hit.en
                     -- "as The Hinterlands" -> "as Hinterlands" quando já há artigo/contração antes
-                    if not hit.ident and sub(en, 1, 4) == "The " then
+                    if not hit.ident and (sub(en, 1, 4) == "The " or sub(en, 1, 4) == "THE ") then
                         local antes = sub(text, 1, i - 1):match("(%S+)%s+$")
                         if antes and PREPS[antes:lower()] then en = sub(en, 5) end
                     end
@@ -731,6 +765,30 @@ SlashCmdList.AZEROTHORIGINAL = function(msg)
             end
         end
         for _, e in ipairs(ns.erros) do print("  erro: " .. e) end
+    elseif cmd == "mapa" then
+        if not (WorldMapFrame and WorldMapFrame:IsShown()) then
+            print(tag .. "abra o mapa (M) e use uma macro com /azo mapa, ou digite com o mapa aberto")
+        else
+            local vistos, n = {}, 0
+            local function lista(fr, d)
+                if not fr or d > 10 or (fr.IsForbidden and fr:IsForbidden()) then return end
+                for _, r in ipairs({ fr:GetRegions() }) do
+                    if r.GetObjectType and r:GetObjectType() == "FontString" and r:IsShown() then
+                        local t = r:GetText()
+                        if legivel(t) and #t > 2 and not vistos[t] and n < 40 then
+                            vistos[t] = true; n = n + 1
+                            print("  \"" .. t:gsub("\n", " / ") .. "\"" .. (comGancho[r] and "" or " (sem gancho)"))
+                        end
+                    end
+                end
+                for _, c in ipairs({ fr:GetChildren() }) do
+                    if c.IsShown and c:IsShown() then lista(c, d + 1) end
+                end
+            end
+            print(tag .. "textos no mapa:")
+            pcall(lista, WorldMapFrame, 0)
+            if n == 0 then print("  (nenhum texto: os nomes desenhados no mapa fazem parte da imagem)") end
+        end
     elseif cmd == "onde" then
         local f = GetMouseFoci and GetMouseFoci()[1] or (GetMouseFocus and GetMouseFocus())
         if not f or f == WorldFrame then
